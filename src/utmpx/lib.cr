@@ -15,9 +15,9 @@ lib LibUTMPX
   DEAD_PROCESS = 8
 
   {% if flag?(:x86_64) %}
-    alias SizeT = Int64
+    alias ArchInt = LibC::Int32T
   {% else %}
-    alias SizeT = Int32
+    alias ArchInt = LibC::Long
   {% end %}
 
   {% if flag?(:darwin) %}
@@ -25,6 +25,11 @@ lib LibUTMPX
   {% elsif flag?(:linux) %}
     UTX_USERSIZE = 32
   {% end %}
+
+  struct ArchTimeval
+    tv_sec : ArchInt
+    tv_usec : ArchInt
+  end
 
   struct ExitStatus
     e_termination : LibC::Short
@@ -50,8 +55,9 @@ lib LibUTMPX
     ut_user : StaticArray(LibC::Char, UTX_USERSIZE) # User login name
     ut_host : StaticArray(LibC::Char, UTX_HOSTSIZE) # Remote hostname
     ut_exit : ExitStatus
-    ut_session : SizeT
-    ut_tv : LibC::Timeval # Time entry was made
+    ut_session : ArchInt
+    ut_tv : ArchTimeval # Time entry was made
+    ut_addr_v6 : LibC::Int32T
     __unused : StaticArray(LibC::Char, 20)
   end
 
