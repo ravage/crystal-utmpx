@@ -42,7 +42,7 @@ lib LibUTMPX
     ut_pad: UInt32
   end
 
-  struct UTPMX_LINUX
+  struct UTMPX_LINUX
     ut_type : LibC::Short # Type of entry
     ut_pid : LibC::PidT # Process ID
     ut_line : StaticArray(LibC::Char, UTX_LINESIZE) # Device name
