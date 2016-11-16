@@ -7,8 +7,7 @@ module UTMPX
       LibUTMPX.setutxent()
 
       while !(ptr = LibUTMPX.getutxent()).null?
-        entry = Entry.new(ptr.value)
-        yield entry
+        yield Entry.new(ptr.value)
       end
 
       LibUTMPX.endutxent()
@@ -16,7 +15,7 @@ module UTMPX
   end
 
   class Entry
-    getter :username, :pid, :device, :type, :host, :at
+    getter! :username, :pid, :device, :type, :host, :at
 
     def initialize(entry : LibUTMPX::UTMPX)
       self.username = entry.ut_user
@@ -25,6 +24,42 @@ module UTMPX
       self.type = entry.ut_type
       self.host = entry.ut_host
       self.at = entry.ut_tv
+    end
+
+    def boot_time?
+      self.type == LibUTMPX::BOOT_TIME
+    end
+
+    def dead_process?
+      self.type == LibUTMPX::DEAD_PROCESS
+    end
+
+    def empty?
+      self.type == LibUTMPX::EMPTY
+    end
+
+    def init_process?
+      self.type == LibUTMPX::INIT_PROCESS
+    end
+
+    def login_process?
+      self.type == LibUTMPX::LOGIN_PROCESS
+    end
+
+    def new_time?
+      self.type == LibUTMPX::NEW_TIME
+    end
+
+    def old_time?
+      self.type == LibUTMPX::OLD_TIME
+    end
+
+    def run_lvl?
+      self.type == LibUTMPX::RUN_LVL
+    end
+
+    def user_process?
+      self.type == LibUTMPX::USER_PROCESS
     end
 
     private def username=(value)
