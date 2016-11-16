@@ -12,10 +12,7 @@ describe UTMPX do
 
   it "hydrates entry object" do
     UTMPX::Reader.read do |entry|
-      puts entry.type
-      if entry.boot_time?
-        entry.username.size.should eq 0
-      elsif entry.user_process? || entry.dead_process?
+      if entry.user_process?
         entry.username.size.should be > 0
         entry.pid.should be > 0
         entry.device.size.should be > 0
