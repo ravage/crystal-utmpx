@@ -1,15 +1,19 @@
 require "./utmpx/*"
 
 module UTMPX
-  LibUTMPX.setutxent()
-  while !(ptr = LibUTMPX.getutxent()).null?
-    t = ptr.value
-    # if t.ut_type == LibUTMPX::USER_PROCESS
-      e = Entry.new(t)
-      puts e.at, e.type, e.username
-    # end
+
+  class Reader
+    def self.read(&blk)
+      LibUTMPX.setutxent()
+
+      while !(ptr = LibUTMPX.getutxent()).null?
+        entry = Entry.new(ptr.value)
+        yield entry
+      end
+
+      LibUTMPX.endutxent()
+    end
   end
-  LibUTMPX.endutxent()
 
   class Entry
     getter :username, :pid, :device, :type, :host, :at

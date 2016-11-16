@@ -44,7 +44,7 @@ lib LibUTMPX
     ut_type : LibC::Short # Type of entry
     ut_tv : LibC::Timeval # Time entry was made
     ut_host : StaticArray(LibC::Char, UTX_HOSTSIZE) # Remote hostname
-    ut_pad: UInt32
+    ut_pad : UInt32
   end
 
   struct UTMPX_LINUX
